@@ -1,0 +1,36 @@
+<template>
+	<view class="">
+		swiper.....
+	</view>
+		
+	
+</template>
+
+<script>
+	import url from "../../common/url.js"
+	export default {
+		onLoad: function () {
+				
+				uni.request({
+					url:url.getswiperimgs,
+					method:"POST",
+					query:{
+						"param_token":"appBannerColumn"
+					},
+					header:{
+						"Content-Type":"application/x-www-form-urlencoded",
+						"PHONE":"2D338B7CE9C74EF5F358259DBB1C21B24C20410CCBA7E54B",
+						"PASSWORD":"9713FD8DB3E6C154"
+					},
+					success:(res)=>{
+						console.log(res.data)
+					}
+					
+				})
+		    }
+	}
+</script>
+
+<style>
+
+</style>

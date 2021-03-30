@@ -1,0 +1,349 @@
+<template>
+	<view class="container">
+		<!-- 轮播图 -->
+		<!-- <swiper v-for="(elem,index) in list" :key="index" indicator-dots=true >
+			<swiper-item >
+				<image :src="`/static/swiperimg/swiper${elem}.png`"></image>
+			</swiper-item>
+		</swiper> -->
+		<swiper indicator-dots=true autoplay=true class="swiper-u">
+
+			<swiper-item>
+				<image @click="Toserver" class="img-swiper" src="/static/swiperimg/swiper1.png"></image>
+			</swiper-item>
+			<swiper-item>
+				<image @click="Toserver" class="img-swiper" src="/static/swiperimg/swiper2.png"></image>
+			</swiper-item>
+			<swiper-item>
+				<image @click="Toserver" class="img-swiper" src="/static/swiperimg/swiper3.png"></image>
+			</swiper-item>
+		</swiper>
+
+		<!-- 服务区 -->
+		<view class="service">
+			<view v-for="(elem,index) in list" class="">
+				<image class="img-xiao" src="/static/swiperimg/img.png"></image><text class="text-e">{{elem}}</text>
+			</view>
+		</view>
+		<!-- 灰线 -->
+		<view class="huixian"></view>
+		<!-- 通知 -->
+		<view class="notice">
+			<image class="img-t" src="../../static/image/liebiao.png"></image>
+		</view>
+		<!-- 灰线 -->
+		<view class="huixian"></view>
+		<!-- 资讯中心 -->
+		<view>
+			<!-- 标题 -->
+			<view class="zxzx">
+				<view class="dots"></view>
+				<view class="dots-text">资讯中心</view>
+			</view>
+			<!-- 按钮区 -->
+			<view class="btn-pz">
+				<view v-for="(elem,index) in btnlist" :key="index">
+					<u-button throttle-time="0" hover-class="none" :data-key="index" @click="btn"
+						:class="{'active':checkedIndex==index}" class="btn-p">{{elem}}</u-button>
+				</view>
+			</view>
+
+
+			<!-- 底部区域 -->
+			<view class="bottom-tip">
+				<view class="btn-text">注册/登录有惊喜</view>
+				<u-button @click="register" class="btn-p" type="primary">开始使用</u-button>
+			</view>
+
+			<!-- 新闻区域 -->
+			<view>
+				<view :data-info="elem.id" @tap="newsInfo(elem.RN)" class="title-time-img"
+					v-for="(elem,index) in listzx" :key="elem.id">
+
+					<view class="title-time">
+						<!-- 标题 -->
+						<view class="xw-title">
+							{{elem.title}}-{{elem.RN}}
+						</view>
+						<view class="xw-time">
+							{{new Date(elem.thetime).toLocaleString()}}
+						</view>
+					</view>
+					<!-- <image class="xw-img" :src="`/static/xwimg/${index}.png`"></image> -->
+					<image class="xw-img" :src="elem.cover"></image>
+
+				</view>
+
+			</view>
+
+
+		</view>
+
+
+
+
+	</view>
+</template>
+
+<script>
+	import url from '@/common/url.js'
+	export default {
+		data() {
+			return {
+				id: '',
+				title: '',
+				checkedIndex: 0,
+				totaltime: [],
+				btnlist: ["新闻资讯", "家庭助力", "无语传递"],
+				// xwlist: [{
+				// 		title: "熬夜不好",
+				// 		date: "2020-2-3"
+				// 	},
+				// 	{
+				// 		title: "熬夜挺慌",
+				// 		date: "2020-3-3"
+				// 	}, {
+				// 		title: "起不来",
+				// 		date: "2020-8-3"
+				// 	}, {
+				// 		title: "好困啊",
+				// 		date: "2020-12-3"
+				// 	}
+				// ],
+				listzx: [],
+				list: ["鉴于服务", "解读服务", "司法服务"],
+				//新闻资讯
+				xinwenlist: [], //新闻资讯
+				jiatinglist: [], //家庭助力
+				chuandilist: [], //物语传递
+			}
+		},
+		methods: {
+			//跳转到注册登录界面
+			register() {
+				uni.navigateTo({
+					url: `../navigater/yidaoregister`
+				})
+			},
+			//新闻页面跳转
+			newsInfo(rn) {
+				console.log(rn);
+				uni.navigateTo({
+					url: `../navigater/yidaoserver?id=${rn}`
+				})
+			},
+			//轮播页面跳转
+			Toserver() {
+				uni.navigateTo({
+					url: '../navigater/yidaoswiper'
+
+				})
+				console.log("111")
+			},
+			//按钮切换
+			btn(event) {
+				// console.log(event)
+				this.checkedIndex = (event.target.dataset.key);
+
+				if (this.checkedIndex === 0) {
+					this.listzx = this.xinwenlist
+				};
+				if (this.checkedIndex === 1) {
+					this.listzx = this.jiatinglist
+				};
+				if (this.checkedIndex === 2) {
+					this.listzx = this.chuandilist
+				}
+			},
+		},
+		onLoad() {
+			uni.request({
+				url: url.getnewserver, //新闻资讯接口。
+				success: (res) => {
+					console.log(res.data.result);
+					this.listzx = res.data.result; //总数据
+					// this.thetime= res.data.result.thetime;
+					// console.log(this.thetime);
+					this.xinwenlist = this.listzx.filter(elem =>
+							elem.column === "新闻资讯"
+						),
+
+						this.jiatinglist = this.listzx.filter(elem =>
+							elem.column === "家属助力"
+						),
+
+						this.chuandilist = this.listzx.filter(elem =>
+							elem.column === "物语传递"
+						)
+					// // this.thetime=this.listzx.filter(elem=>
+					// // 	 elem.thetime 
+					// // ),
+					// this.thetime=this.listzx.map(elem=>
+					// 	elem.thetime
+					// );
+					// // console.log(this.thetime)
+
+					// var totaltime=this.thetime.map(elem=>
+					// 	new Date(elem).toLocaleString()
+					// )
+					// console.log(totaltime)
+
+					// console.log(this.xinwenlist)//新闻资讯
+					// console.log(this.jiatinglist)//家庭助力
+					// console.log(this.chuandilist)//物语传递
+					// this.id = 'request success';
+
+				}
+			});
+
+		}
+	}
+</script>
+
+<style>
+	.container {}
+
+	.swiper-u {
+		height: 400rpx;
+		width: 414px;
+	}
+
+	.img-swiper {
+		width: 414px;
+		height: 400rpx;
+	}
+
+	.service {
+		display: flex;
+		flex-direction: row;
+		margin-top: 20px;
+		justify-content: space-around;
+	}
+
+	.img-xiao {
+		height: 72px;
+		width: 72px;
+		border-radius: 20px;
+	}
+
+	.text-e {
+		margin: 5px 0 5px 5px;
+		text-align: center;
+	}
+
+	/* 灰线,公用 */
+	.huixian {
+		width: 414px;
+		height: 10px;
+		background-color: #f1f1f1;
+	}
+
+	/* 通知 */
+	.notice {
+		width: 100%;
+		height: 80px;
+		background-color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+	}
+
+	.img-t {
+		margin-left: 20px;
+		width: 50px;
+		height: 50px;
+	}
+
+	/* 资讯中心 */
+	.zxzx {
+		margin: 10px 10px 10px 10px;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.dots-text {
+		margin-left: 10px;
+		font-size: 18px;
+	}
+
+	.dots {
+		width: 9px;
+		height: 27px;
+		border-radius: 4.5px;
+		background-color: #1a92ff;
+	}
+
+	/* 按钮 */
+	.btn-pz {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+	}
+
+	.active {
+		background-color: #2979ff;
+		color: #FFFFFF;
+	}
+
+	.btn-p {
+		width: 100px;
+		height: ;
+		/* border-radius: 20px; */
+		font-size: 12px;
+	}
+
+	/* 底部登录区 */
+	.bottom-tip {
+		z-index: 10;
+		width: 100%;
+		height: 58px;
+		background-color: rgba(128, 128, 128, .8);
+		position: fixed;
+		bottom: 50px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 15px;
+		box-sizing: border-box;
+	}
+
+	/* 新闻区域 */
+	.title-time-img {
+		width: 375px;
+		height: 80px;
+		/* background-color: pink; */
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		/* align-items: center; */
+		padding: 5px;
+
+	}
+
+	.title-time {
+		display: flex;
+		justify-content: space-between;
+
+	}
+
+	.xw-title {
+		width: 250px;
+		margin: 5px 0 0 10px;
+		font-size: 15px;
+		word-wrap: normal;
+
+	}
+
+	.xw-time {
+		margin-left: 10px;
+		font-size: 12px;
+		color: #808080;
+	}
+
+	.xw-img {
+		border-radius: 5px;
+		width: 85px;
+		height: 65px;
+
+	}
+</style>

@@ -1,0 +1,195 @@
+<template>
+	<view>
+		<view class="container"v-for="(elem,index) in list" :key="index">
+			<!-- 标题 -->
+			<view>
+				<view class="title">
+					<text>{{elem.title}}</text>
+				</view>
+				<!-- 作者 -->
+				<view class="author">
+					<view class="">
+						<image class="author-img" :src="elem.cover"></image>
+					</view>
+					
+					<view class="author-name-time">
+						<view class="author-name">{{elem.author}}</view>
+						<view class="author-time">
+							{{new Date(elem.thetime).toLocaleString()}}
+						</view>
+					</view>
+				</view>
+				<!-- 新闻内容 -->
+				<view class="content">
+					
+					{{elem.content}}
+				</view>
+			</view>
+		</view>
+		<!-- 评论区comment -->
+		<view class="comment">
+			<input class="comment-input" name="input" type="text" placeholder="  这是一个输入框..." />
+			<!-- 点赞数 -->
+			<view class="zan">
+				<image class="zan-img" src="../../static/xwimg/zan.png" mode=""></image>
+				<view class="count">12</view>
+			</view>
+			<!-- 评论数 -->
+			<view class="zan">
+				<image class="zan-img" src="../../static/xwimg/comment.png" mode=""></image>
+				<view class="count">0</view>
+			</view>
+			<!-- 分享 -->
+			<view class="zan">
+				<image class="zan-img" src="../../static/xwimg/share.png" mode=""></image>
+				<view class="count">分享</view>
+			</view>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	import url from '@/common/url.js'
+	export default {
+		data() {
+			return {
+				rn: '',
+				list: [],
+				contentlist: []
+			}
+		},
+		methods: {
+
+
+		},
+		onLoad(option) {
+			// 接收home.nvue中传来的rn值
+			// console.log(option.id),
+			this.rn = option.id
+			// console.log(this.rn)
+
+
+			//获取新闻数据
+			uni.request({
+				url: url.getswiperimg,
+				method: "POST",
+				query: {
+					"param_token": "appBannerColumn"
+				},
+				header: {
+					"Content-Type": "application/json",
+					// "PHONE":"2D338B7CE9C74EF5F358259DBB1C21B24C20410CCBA7E54B",
+					// "PASSWORD":"9713FD8DB3E6C154"
+				},
+				data: {
+					"current": "1",
+					"size": "10"
+				},
+				success: (res) => {
+					// console.log(res.data);
+					this.contentlist = res.data.result;
+					// console.log(this.contentlist)
+					this.list = this.contentlist.filter(elem => elem.RN == this.rn)
+					console.log(this.list)
+					// console.log(this.rn)
+				}
+			})
+		},
+		onShow() {
+			// console.log(this.contentlist)
+		}
+		// beforeCreate(){
+		// 	 const domModule = uni.requireNativePlugin('dom')
+		// 	 domModule.addRule('fontFace', {
+		// 		'fontFamily': "Iconfont",
+		// 		'src':"url('http://at.alicdn.com/t/font_2430317_f4ypb0c5t94.ttf')"
+		// 	});
+		// }
+	}
+</script>
+
+<style>
+	.container {
+		padding: 0 15px;
+	}
+
+	.title {
+		margin: 15px 0;
+		font-size: 25px;
+		font-weight: bold;
+	}
+
+	.author {
+		display: flex;
+		flex-direction: row;
+
+	}
+
+	.author-img {
+		width: 70px;
+		height: 70px;
+		background-color: #FFFFFF;
+		border-radius: 35px;
+	}
+
+	.author-name-time {
+		padding: 0 25px;
+		box-sizing: border-box;
+		justify-content: space-between;
+		
+	}
+
+	.author-name {
+		width: 300px;
+		font-size: 20px;
+		font-weight: bold;
+		/* 换行 */
+		/* word-break: break-all; */
+		word-wrap:break-word;
+	}
+
+	.author-time {
+		font-size: 16px;
+		color: #808080;
+	}
+
+	.content {
+		padding: 20px 0 0 0;
+		font-size: 20px;
+		line-height: 40px;
+	}
+
+	/* 评论区 */
+	.comment {
+		display: flex;
+		flex-direction: row;
+		background-color: #F8F8F8;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+	}
+
+	.comment-input {
+		background-color: #f0C0C0;
+		width: 60%;
+		height: 50px;
+		border-radius: 25px;
+		margin: 10px 20px;
+	}
+
+
+	.zan {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0 20px;
+	}
+
+	.zan-img {
+		width: 25px;
+		height: 25px;
+	}
+</style>

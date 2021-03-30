@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "列表",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "xg-waterfall-item": "/components/xg-waterfall-item/xg-waterfall-item",
+    "xg-waterfall": "/components/xg-waterfall/xg-waterfall"
+  }
+}

@@ -1,0 +1,1 @@
+<view class="waterfall-item data-v-3c66b25e" style="{{'left:'+(left+'px')+';'+('top:'+(topReal+'px')+';')+('width:'+(width+'px')+';')}}" id="waterfall-item"><slot></slot></view>

@@ -1,0 +1,72 @@
+<template>
+	
+
+		<xg-waterfall  :column-count="2"  left-gap="10px" right-gap="10px" column-gap="10px">
+			<!-- 瀑布头 -->
+		    <xg-waterfall-header class="waterfall-header">
+				瀑布头区域
+			</xg-waterfall-header>
+			<!-- 瀑布信息 -->
+		    <xg-waterfall-item class="water-item" v-for="(elem,index) in list" :key="index">
+				<view>{{elem}}</view>
+		    </xg-waterfall-item>
+			<!-- 瀑布尾 -->
+			<xg-waterfall-footer class="waterfall-footer">
+				瀑布底部区域
+			</xg-waterfall-footer>
+		   
+		</xg-waterfall>
+
+
+	
+</template>
+
+<script>
+	import xgWaterfall from '@/components/xg-waterfall/xg-waterfall.vue';
+	import xgWaterfallItem from '@/components/xg-waterfall-item/xg-waterfall-item.vue';
+	import xgWaterfallFooter from '@/components/xg-waterfall-footer/xg-waterfall-footer.vue';
+	import xgWaterfallHeader from '@/components/xg-waterfall-header/xg-waterfall-header.vue'
+	export default {
+		components: {
+			xgWaterfall,
+			xgWaterfallItem,
+			xgWaterfallFooter,
+			xgWaterfallHeader
+		},
+		data() {
+			return {
+				list: ['b','c','d','e','f','g','c','d','e','f','g','c','d','e','f','g','c','d','e','f','g','c','d','e','f','g','c','d','e','f','g','c','d','e','f','g','c','d','e','f','g']
+
+			}
+		},
+		onLoad() {
+
+		},
+		beforeCreate() {
+			// const domModule = uni.requireNativePlugin('dom')
+			// domModule.addRule('fontFace', {
+			// 	'fontFamily': "myIconfont",
+			// 	'src': "url('http://at.alicdn.com/t/font_2430317_lx8loj591m.ttf')"
+			// });
+		},
+		methods: {
+
+		},
+
+	}
+</script>
+
+<style>
+	.water-item {
+		height: 200rpx;
+		border: 1px solid #000;
+		border-radius: 20px;
+		/* background-color: #00AAFF; */
+		margin-bottom: 10px;
+	}
+	.waterfall-header{
+		width: 92%;
+		border: 1px solid #ccc;
+		
+	}
+</style>
