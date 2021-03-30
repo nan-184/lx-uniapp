@@ -122,7 +122,7 @@
 			//跳转到注册登录界面
 			register() {
 				uni.navigateTo({
-					url: `../navigater/yidaoregister`
+					url: `../navigater/register`
 				})
 			},
 			//新闻页面跳转

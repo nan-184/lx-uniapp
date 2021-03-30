@@ -37,7 +37,7 @@
 			}
 		},
 	    {
-            "path" : "pages/navigater/yidaoregister",
+            "path" : "pages/navigater/register",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "注册",
